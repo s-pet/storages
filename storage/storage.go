@@ -3,49 +3,37 @@ package storage
 
 import (
 	"errors"
-	"log"
 )
 
 const (
-	externalStorage_NAS                = "NAS"
-	externalStorage_GoogleGloudStorage = "Google Cloud Storage"
-	externalStorage_AmazonS3           = "Amazon S3"
+	externalStorage_NAS = "NAS" //Network Attached Storage; e.g. a local directory
+	externalStorage_GCS = "GCS" //Google Cloud Storage (FOR FUTURE USE)
+	externalStorage_AS3 = "AS3" //Amazon S3 (FOR FUTURE USE)
 )
 
 type ExternalStorage interface {
+	ExternalStorage_Init(attr StorageAttributes) error
 	ExternalStorage_GetName() string
 	ExternalStorage_GetType() string
 	ExternalStorage_GetUuid() string
 	ExternalStorage_Store(doc string) error
 }
 
-type StorageAttributes map[string]string
 
-func CreateStorage(attr StorageAttributes) (ExternalStorage, error) {
+func InitExternalStorage(attr StorageAttributes) (ExternalStorage, error) {
 	var (
 		s ExternalStorage
 		e error
 	)
 	switch attr["type"] {
-	case externalStorage_NAS:
-		s, e = nas{}.construct(attr)
-	default:
-		e = errors.New("StorageType " + attr["type"] + " is not supported")
-		log.Println(e.Error())
+		case externalStorage_NAS:
+			s = nas{}
+		default:
+			e = errors.New("StorageType \"" + attr["type"] + "\" is not supported")
+	}
+	
+	if e == nil {
+		s.ExternalStorage_Init(attr)
 	}
 	return s, e
-}
-
-func validateName(stgName string) error {
-	if len(stgName) == 0 {
-		return errors.New("Storage name cannot be empty")
-	}
-	return nil
-}
-
-func validateUuid(stgUuid string) error {
-	if len(stgUuid) == 0 {
-		return errors.New("Storage uuid cannot be empty")
-	}
-	return nil
 }

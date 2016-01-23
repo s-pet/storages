@@ -17,7 +17,7 @@ func constructStorageMap(xmlFilename string) error {
 	stgAttrList, err := readStorageConfig(xmlFilename)
 	if stgAttrList != nil {
 		for _, stgAttr := range stgAttrList {
-			stg, err := storage.CreateStorage(stgAttr)
+			stg, err := storage.InitExternalStorage(stgAttr)
 			if err == nil {
 				addStorage(stg)
 			}
