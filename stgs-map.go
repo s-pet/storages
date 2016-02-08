@@ -1,4 +1,4 @@
-// storageMap
+// (safe) map of external storages
 package main
 
 import (

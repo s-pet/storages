@@ -1,4 +1,4 @@
-// storage
+// interface for external storages
 package storage
 
 import (
@@ -22,18 +22,21 @@ type ExternalStorage interface {
 
 func InitExternalStorage(attr StorageAttributes) (ExternalStorage, error) {
 	var (
-		s ExternalStorage
-		e error
+		stg     ExternalStorage
+		err     error
 	)
-	switch attr["type"] {
-		case externalStorage_NAS:
-			s = nas{}
-		default:
-			e = errors.New("StorageType \"" + attr["type"] + "\" is not supported")
+	
+	if err != nil {
+		switch attr["type"] {
+			case externalStorage_NAS:
+	     		stg = nas{}
+			default:
+				err = errors.New("StorageType \"" + attr["type"] + "\" is not supported")
+		}
 	}
 	
-	if e == nil {
-		s.ExternalStorage_Init(attr)
+	if err == nil {
+		stg.ExternalStorage_Init(attr)
 	}
-	return s, e
+	return stg, err
 }

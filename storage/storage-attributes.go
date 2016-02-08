@@ -8,19 +8,28 @@ import (
 
 type StorageAttributes map[string]string
 
-
-func validateName(stgName string) error {
-	if len(stgName) == 0 {
-		return errors.New("Storage name cannot be empty")
-	}
-	return nil
+type stgAttrType struct {
+	stgType, stgUuid, stgName string
 }
 
-func validateUuid(stgUuid string) error {
-	if len(stgUuid) == 0 {
-		return errors.New("Storage uuid cannot be empty")
+func constructStgAttr(sType, sUuid, sName string) (stgAttrType, error) {
+	var (
+		stgAttr stgAttrType
+		err error
+	)
+	if len(sType) == 0 {
+		err = errors.New("Storage Type must not be empty: " + sType + ", " + sUuid + "," + sName)
 	}
-	return nil
+	if len(sUuid) == 0 {
+		err = errors.New("Storage Uuid must not be empty: " + sType + ", " + sUuid + "," + sName)
+	}
+	if len(sName) == 0 {
+		err = errors.New("Storage Name must not be empty: " + sType + ", " + sUuid + "," + sName)
+	}
+	if err == nil {
+		stgAttr = stgAttrType{stgType: sType, stgUuid: sUuid, stgName: sName}
+	}
+	return stgAttr, err
 }
 
 
