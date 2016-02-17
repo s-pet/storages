@@ -1,0 +1,8 @@
+<storages>
+	<storage>
+		<attribute key="name" value="NasExample" />
+		<attribute key="uuid" value="DUMMY-UUID-NasExample" />
+		<attribute key="type" value="NAS" />
+		<attribute key="base" value="/tmp/Storage/NasExample" />
+	</storage>
+</storages>
