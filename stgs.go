@@ -3,10 +3,7 @@ package main
 
 import (
 	"log"
-)
-
-const (
-	GOSTORER_HOME = ""
+	"os"
 )
 
 func Store(stgUuid string, doc string) (bool, string) {
@@ -28,20 +25,30 @@ func Store(stgUuid string, doc string) (bool, string) {
 }
 
 func main() {
-	log.Println("Starting stgs.")
+	log.Println("Starting storages...")
 
-	err := constructStorageMap(GOSTORER_HOME + "config/storages.xml")
+	//CONFIGURATION OF EXTERNAL STORAGES
+	//configuration file: <current-working-directory>/config/storages.xml
+	//read configuration file and construct map of external storages
+	cwd, errCwd := os.Getwd()
+	if errCwd != nil {
+		log.Fatal("Cannot determine current working directory: " + errCwd.Error())
+	}
+	storages_config := cwd + "/config/storages.xml"
+	finfo, errFinfo := os.Stat(storages_config)
+	if errFinfo != nil {
+		log.Fatal("Cannot access storage configuration: " + errFinfo.Error())
+	}
+	if finfo.IsDir() {
+		log.Fatal("Cannot access storage configuration: " + errFinfo.Error())
+	}
+	err := constructStorageMap(storages_config)
 	if err != nil {
-		log.Println("Failed to construct map of storages: " + err.Error())
-		return
+		log.Fatal("Cannot construct map of storages: " + err.Error())
 	}
 
-	log.Println("Successfully started goStorer")
-	Store("uuid001", "Junimond")
-	Store("uuid002", "Julimond")
-	Store("uuid003", "Wintermärchen")
-	Store("uuid004", "xxx")
-	Store("uuid001", "Junimond")
+	Store("UUID-DOES-NOT-EXIST", "")
+	Store("DUMMY-UUID-NasExample", "dummy")
 
-	log.Println("stgs stopped.")
+	log.Println("storages successfully stopped.")
 }

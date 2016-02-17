@@ -12,13 +12,13 @@ type nas struct {
 	nasBase string
 }
 
-func (s nas) ExternalStorage_Init(attr StorageAttributes) error {
+func (s nas) ExternalStorage_Init(attr StorageAttributes) (ExternalStorage, error) {
 	s.stgUuid = attr["uuid"]
 	s.stgName = attr["name"]
 	s.stgType = attr["type"]
 	s.nasBase = attr["base"]
-	log.Println("Successfully created storage [" + s.stgName + ", " + s.stgType + ", " + s.stgUuid + ", " + s.nasBase + "]")
-	return nil
+	log.Println("Successfully initialized nas storage [" + s.stgName + ", " + s.stgType + ", " + s.stgUuid + ", " + s.nasBase + "]")
+	return s, nil
 }
 
 func (s nas) ExternalStorage_GetName() string {

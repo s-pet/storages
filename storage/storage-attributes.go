@@ -5,7 +5,6 @@ import (
 	"errors"
 )
 
-
 type StorageAttributes map[string]string
 
 type stgAttrType struct {
@@ -15,7 +14,7 @@ type stgAttrType struct {
 func constructStgAttr(sType, sUuid, sName string) (stgAttrType, error) {
 	var (
 		stgAttr stgAttrType
-		err error
+		err     error
 	)
 	if len(sType) == 0 {
 		err = errors.New("Storage Type must not be empty: " + sType + ", " + sUuid + "," + sName)
@@ -31,6 +30,3 @@ func constructStgAttr(sType, sUuid, sName string) (stgAttrType, error) {
 	}
 	return stgAttr, err
 }
-
-
-

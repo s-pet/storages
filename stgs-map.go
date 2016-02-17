@@ -1,10 +1,16 @@
-// (safe) map of external storages
+// map of external storages (safe)
 package main
 
 import (
 	"github.com/s-pet/storages/storage"
+	"log"
 	"sync"
 )
+
+type StorageMap struct {
+	sync.RWMutex
+	byUuid map[string]*storage.ExternalStorage
+}
 
 var (
 	storages = struct {
@@ -30,6 +36,7 @@ func addStorage(s storage.ExternalStorage) {
 	if s != nil {
 		storages.Lock()
 		storages.byUuid[s.ExternalStorage_GetUuid()] = &s
+		log.Print("ADDED ", s.ExternalStorage_GetUuid())
 		storages.Unlock()
 	}
 }
